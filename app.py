@@ -102,6 +102,15 @@ def set_message():
                 sense.clear()
                 return jsonify({'status': 'No smiley set', 'type': type, 'color': color, 'mood': 'Only happy or sad accepted as content', 'sender_name': sender_name, 'receiever_name': receiever_name})
 
+# make GET endpoint to get all messages from database and jsonify them
+@app.route('/api/get_messages', methods=['GET'])
+def get_messages():
+    with sqlite3.connect(db) as connection:
+        c = connection.cursor()
+        c.execute('SELECT * FROM messages')
+        messages = c.fetchall()
+    return jsonify(messages)
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8000)
 
